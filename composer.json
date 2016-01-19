@@ -1,0 +1,36 @@
+{
+	"name": "carrooi/php-tokenizer",
+	"type": "library",
+	"description": "Advanced PHP tokenizer",
+	"keywords": ["code"],
+	"homepage": "https://github.com/Carrooi/PHP-Tokenizer",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "David Kudera",
+			"homepage": "http://davidkudera.com",
+			"email": "kudera.d@gmail.com"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/Carrooi/PHP-Tokenizer/issues"
+	},
+	"require": {
+		"php": ">=5.5.0"
+	},
+	"require-dev": {
+		"nette/tester": "~1.6.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"Carrooi\\Tokenizer\\": "src/"
+		},
+		"classmap": [
+			"src/exceptions.php"
+
+		],
+		"files": [
+			"src/constants.php"
+		]
+	}
+}
