@@ -37,11 +37,11 @@ class AnyBetweenModifierTest extends TestCase
 		$match = $mb->match($tokens);
 
 		Assert::equal([
-			$this->createToken('(', 7),
-			$this->createToken('1', 8),
-			$this->createToken(',', 9),
-			$this->createToken('2', 10),
-			$this->createToken(')', 11),
+			$this->token('(', Lexer::T_PARENTHESIS_OPEN,  7),
+			$this->token('1', Lexer::T_LNUMBER,           8),
+			$this->token(',', Lexer::T_COMMA,             9),
+			$this->token('2', Lexer::T_LNUMBER,           10),
+			$this->token(')', Lexer::T_PARENTHESIS_CLOSE, 11),
 		], $match);
 	}
 
@@ -58,21 +58,21 @@ class AnyBetweenModifierTest extends TestCase
 		$match = $mb->match($tokens);
 
 		Assert::equal([
-			$this->createToken('(', 7),
-			$this->createToken('1', 8),
+			$this->token('(', Lexer::T_PARENTHESIS_OPEN, 7),
+			$this->token('1', Lexer::T_LNUMBER,          8),
 			[
-				$this->createToken('(', 9),
-				$this->createToken('2', 10),
+				$this->token('(', Lexer::T_PARENTHESIS_OPEN, 9),
+				$this->token('2', Lexer::T_LNUMBER,          10),
 				[
-					$this->createToken('(', 11),
-					$this->createToken('3', 12),
-					$this->createToken(')', 13),
+					$this->token('(', Lexer::T_PARENTHESIS_OPEN,  11),
+					$this->token('3', Lexer::T_LNUMBER,           12),
+					$this->token(')', Lexer::T_PARENTHESIS_CLOSE, 13),
 				],
-				$this->createToken('4', 14),
-				$this->createToken(')', 15),
+				$this->token('4', Lexer::T_LNUMBER,           14),
+				$this->token(')', Lexer::T_PARENTHESIS_CLOSE, 15),
 			],
-			$this->createToken('5', 16),
-			$this->createToken(')', 17),
+			$this->token('5', Lexer::T_LNUMBER,           16),
+			$this->token(')', Lexer::T_PARENTHESIS_CLOSE, 17),
 		], $match);
 	}
 
@@ -89,30 +89,30 @@ class AnyBetweenModifierTest extends TestCase
 		$match = $mb->match($tokens);
 
 		Assert::equal([
-			$this->createToken('(', 7),
-			$this->createToken('1', 8),
-			$this->createToken(',', 9),
+			$this->token('(', Lexer::T_PARENTHESIS_OPEN, 7),
+			$this->token('1', Lexer::T_LNUMBER,          8),
+			$this->token(',', Lexer::T_COMMA,            9),
 			[
-				$this->createToken('(', 10),
-				$this->createToken('2', 11),
-				$this->createToken(',', 12),
+				$this->token('(', Lexer::T_PARENTHESIS_OPEN, 10),
+				$this->token('2', Lexer::T_LNUMBER,          11),
+				$this->token(',', Lexer::T_COMMA,            12),
 				[
-					$this->createToken('(', 13),
-					$this->createToken(')', 14),
+					$this->token('(', Lexer::T_PARENTHESIS_OPEN,  13),
+					$this->token(')', Lexer::T_PARENTHESIS_CLOSE, 14),
 				],
-				$this->createToken(',', 15),
-				$this->createToken('2', 16),
-				$this->createToken(',', 17),
-				$this->createToken('2', 18),
-				$this->createToken(')', 19),
+				$this->token(',', Lexer::T_COMMA,             15),
+				$this->token('2', Lexer::T_LNUMBER,           16),
+				$this->token(',', Lexer::T_COMMA,             17),
+				$this->token('2', Lexer::T_LNUMBER,           18),
+				$this->token(')', Lexer::T_PARENTHESIS_CLOSE, 19),
 			],
-			$this->createToken(',', 20),
+			$this->token(',', Lexer::T_COMMA, 20),
 			[
-				$this->createToken('(', 21),
-				$this->createToken('3', 22),
-				$this->createToken(')', 23),
+				$this->token('(', Lexer::T_PARENTHESIS_OPEN,  21),
+				$this->token('3', Lexer::T_LNUMBER,           22),
+				$this->token(')', Lexer::T_PARENTHESIS_CLOSE, 23),
 			],
-			$this->createToken(')', 24),
+			$this->token(')', Lexer::T_PARENTHESIS_CLOSE, 24),
 		], $match);
 	}
 

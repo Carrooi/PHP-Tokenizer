@@ -46,9 +46,9 @@ class ClosureModifierTest extends TestCase
 		$match = $mb->match($tokens);
 
 		Assert::equal([
-			$this->createToken('!==', 12),
-			$this->createToken(' ', 15),
-			$this->createToken('false', 16),
+			$this->token('!==',   Lexer::T_IS_NOT_IDENTICAL, 12),
+			$this->token(' ',     Lexer::T_WHITESPACE,       15),
+			$this->token('false', Lexer::T_FALSE,            16),
 		], $match);
 	}
 

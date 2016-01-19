@@ -29,12 +29,10 @@ class Tokenizer_BooleanTest extends TestCase
 		$tokens = Tokenizer::tokenize('<?php TRUE');
 
 		Assert::equal([
-			$this->createToken('<?php', 1),
-			$this->createToken(' ', 6),
-			$this->createToken('TRUE', 7),
+			$this->token('<?php', Lexer::T_OPEN_TAG,   1),
+			$this->token(' ',     Lexer::T_WHITESPACE, 6),
+			$this->token('TRUE',  Lexer::T_TRUE,       7),
 		], $tokens);
-
-		Assert::same(Lexer::T_TRUE, $tokens[2]['type']);
 	}
 
 
@@ -43,12 +41,10 @@ class Tokenizer_BooleanTest extends TestCase
 		$tokens = Tokenizer::tokenize('<?php FALSE');
 
 		Assert::equal([
-			$this->createToken('<?php', 1),
-			$this->createToken(' ', 6),
-			$this->createToken('FALSE', 7),
+			$this->token('<?php', Lexer::T_OPEN_TAG,   1),
+			$this->token(' ',     Lexer::T_WHITESPACE, 6),
+			$this->token('FALSE', Lexer::T_FALSE,      7),
 		], $tokens);
-
-		Assert::same(Lexer::T_FALSE, $tokens[2]['type']);
 	}
 
 }

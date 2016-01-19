@@ -46,9 +46,9 @@ class NamespaceDeclarationWalkerTest extends TestCase
 		Assert::type(NamespaceDeclaration::class, $namespace);
 		Assert::same('A', $namespace->name);
 		Assert::equal([
-			$this->createToken('namespace', 7),
-			$this->createToken(' ', 16),
-			$this->createToken('A', 17),
+			$this->token('namespace', Lexer::T_NAMESPACE,  7),
+			$this->token(' ',         Lexer::T_WHITESPACE, 16),
+			$this->token('A',         Lexer::T_STRING,     17),
 		], $namespace->tokens);
 	}
 
@@ -63,13 +63,13 @@ class NamespaceDeclarationWalkerTest extends TestCase
 		Assert::type(NamespaceDeclaration::class, $namespace);
 		Assert::same('A\B\C', $namespace->name);
 		Assert::equal([
-			$this->createToken('namespace', 7),
-			$this->createToken(' ', 16),
-			$this->createToken('A', 17),
-			$this->createToken('\\', 18),
-			$this->createToken('B', 19),
-			$this->createToken('\\', 20),
-			$this->createToken('C', 21),
+			$this->token('namespace', Lexer::T_NAMESPACE,    7),
+			$this->token(' ',         Lexer::T_WHITESPACE,   16),
+			$this->token('A',         Lexer::T_STRING,       17),
+			$this->token('\\',        Lexer::T_NS_SEPARATOR, 18),
+			$this->token('B',         Lexer::T_STRING,       19),
+			$this->token('\\',        Lexer::T_NS_SEPARATOR, 20),
+			$this->token('C',         Lexer::T_STRING,       21),
 		], $namespace->tokens);
 	}
 
@@ -86,14 +86,14 @@ class NamespaceDeclarationWalkerTest extends TestCase
 		Assert::type(NamespaceDeclaration::class, $namespace);
 		Assert::same('\A\B\C', $namespace->name);
 		Assert::equal([
-			$this->createToken('namespace', 7),
-			$this->createToken(' ', 16),
-			$this->createToken('\\', 17),
-			$this->createToken('A', 18),
-			$this->createToken('\\', 19),
-			$this->createToken('B', 20),
-			$this->createToken('\\', 21),
-			$this->createToken('C', 22),
+			$this->token('namespace', Lexer::T_NAMESPACE,    7),
+			$this->token(' ',         Lexer::T_WHITESPACE,   16),
+			$this->token('\\',        Lexer::T_NS_SEPARATOR, 17),
+			$this->token('A',         Lexer::T_STRING,       18),
+			$this->token('\\',        Lexer::T_NS_SEPARATOR, 19),
+			$this->token('B',         Lexer::T_STRING,       20),
+			$this->token('\\',        Lexer::T_NS_SEPARATOR, 21),
+			$this->token('C',         Lexer::T_STRING,       22),
 		], $namespace->tokens);
 	}
 

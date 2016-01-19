@@ -49,9 +49,9 @@ class NewInstanceWalkerTest extends TestCase
 		Assert::null($class->parenthesis);
 
 		Assert::equal([
-			$this->createToken('new', 7),
-			$this->createToken(' ', 10),
-			$this->createToken('A', 11),
+			$this->token('new', Lexer::T_NEW,        7),
+			$this->token(' ',   Lexer::T_WHITESPACE, 10),
+			$this->token('A',   Lexer::T_STRING,     11),
 		], $class->tokens);
 	}
 
@@ -68,13 +68,13 @@ class NewInstanceWalkerTest extends TestCase
 		Assert::null($class->parenthesis);
 
 		Assert::equal([
-			$this->createToken('new', 7),
-			$this->createToken(' ', 10),
-			$this->createToken('A', 11),
-			$this->createToken('\\', 12),
-			$this->createToken('B', 13),
-			$this->createToken('\\', 14),
-			$this->createToken('C', 15),
+			$this->token('new', Lexer::T_NEW,          7),
+			$this->token(' ',   Lexer::T_WHITESPACE,   10),
+			$this->token('A',   Lexer::T_STRING,       11),
+			$this->token('\\',  Lexer::T_NS_SEPARATOR, 12),
+			$this->token('B',   Lexer::T_STRING,       13),
+			$this->token('\\',  Lexer::T_NS_SEPARATOR, 14),
+			$this->token('C',   Lexer::T_STRING,       15),
 		], $class->tokens);
 	}
 
@@ -92,18 +92,18 @@ class NewInstanceWalkerTest extends TestCase
 		Assert::same('(1)', $class->parenthesis->value);
 
 		Assert::equal([
-			$this->createToken('new', 7),
-			$this->createToken(' ', 10),
-			$this->createToken('A', 11),
-			$this->createToken('(', 12),
-			$this->createToken('1', 13),
-			$this->createToken(')', 14),
+			$this->token('new', Lexer::T_NEW,               7),
+			$this->token(' ',   Lexer::T_WHITESPACE,        10),
+			$this->token('A',   Lexer::T_STRING,            11),
+			$this->token('(',   Lexer::T_PARENTHESIS_OPEN,  12),
+			$this->token('1',   Lexer::T_LNUMBER,           13),
+			$this->token(')',   Lexer::T_PARENTHESIS_CLOSE, 14),
 		], $class->tokens);
 
 		Assert::equal([
-			$this->createToken('(', 12),
-			$this->createToken('1', 13),
-			$this->createToken(')', 14),
+			$this->token('(', Lexer::T_PARENTHESIS_OPEN,  12),
+			$this->token('1', Lexer::T_LNUMBER,           13),
+			$this->token(')', Lexer::T_PARENTHESIS_CLOSE, 14),
 		], $class->parenthesis->tokens);
 	}
 
@@ -121,19 +121,19 @@ class NewInstanceWalkerTest extends TestCase
 		Assert::same('(1)', $instance->parenthesis->value);
 
 		Assert::equal([
-			$this->createToken('new', 7),
-			$this->createToken(' ', 10),
-			$this->createToken('A', 11),
-			$this->createToken(' ', 12),
-			$this->createToken('(', 13),
-			$this->createToken('1', 14),
-			$this->createToken(')', 15),
+			$this->token('new', Lexer::T_NEW,               7),
+			$this->token(' ',   Lexer::T_WHITESPACE,        10),
+			$this->token('A',   Lexer::T_STRING,            11),
+			$this->token(' ',   Lexer::T_WHITESPACE,        12),
+			$this->token('(',   Lexer::T_PARENTHESIS_OPEN,  13),
+			$this->token('1',   Lexer::T_LNUMBER,           14),
+			$this->token(')',   Lexer::T_PARENTHESIS_CLOSE, 15),
 		], $instance->tokens);
 
 		Assert::equal([
-			$this->createToken('(', 13),
-			$this->createToken('1', 14),
-			$this->createToken(')', 15),
+			$this->token('(', Lexer::T_PARENTHESIS_OPEN,  13),
+			$this->token('1', Lexer::T_LNUMBER,           14),
+			$this->token(')', Lexer::T_PARENTHESIS_CLOSE, 15),
 		], $instance->parenthesis->tokens);
 	}
 

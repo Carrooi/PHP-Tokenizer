@@ -34,12 +34,12 @@ class Lexer_MoveTest extends TestCase
 	public function setUp()
 	{
 		$this->expectedTokens = [
-			$this->createToken('<?php', 1),
-			$this->createToken("\n", 6),
-			$this->createToken('return', 7, 2),
-			$this->createToken(' ', 13, 2),
-			$this->createToken('true', 14, 2),
-			$this->createToken(';', 18, 2),
+			$this->token('<?php',  Lexer::T_OPEN_TAG,   1),
+			$this->token("\n",     Lexer::T_NEW_LINE,   6),
+			$this->token('return', Lexer::T_RETURN,     7,  2),
+			$this->token(' ',      Lexer::T_WHITESPACE, 13, 2),
+			$this->token('true',   Lexer::T_TRUE,       14, 2),
+			$this->token(';',      Lexer::T_SEMICOLON,  18, 2),
 		];
 	}
 

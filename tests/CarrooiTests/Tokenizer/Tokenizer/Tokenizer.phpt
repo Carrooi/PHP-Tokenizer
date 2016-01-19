@@ -29,12 +29,9 @@ class TokenizerTest extends TestCase
 		$tokens = Tokenizer::tokenize('<?php ', true);
 
 		Assert::equal([
-			$this->createToken('<?php', 1, 1, true),
-			$this->createToken(' ', 6, 1, true),
+			$this->token('<?php', Lexer::T_OPEN_TAG,   1, 1, 'T_OPEN_TAG'),
+			$this->token(' ',     Lexer::T_WHITESPACE, 6, 1, 'T_WHITESPACE'),
 		], $tokens);
-
-		Assert::same('T_OPEN_TAG', $tokens[0]['literal']);
-		Assert::same('T_WHITESPACE', $tokens[1]['literal']);
 	}
 
 
@@ -43,10 +40,8 @@ class TokenizerTest extends TestCase
 		$tokens = Tokenizer::tokenize('<?PHP');
 
 		Assert::equal([
-			$this->createToken('<?PHP', 1)
+			$this->token('<?PHP', Lexer::T_OPEN_TAG, 1)
 		], $tokens);
-
-		Assert::same(Lexer::T_OPEN_TAG, $tokens[0]['type']);
 	}
 
 
@@ -55,10 +50,8 @@ class TokenizerTest extends TestCase
 		$tokens = Tokenizer::tokenize('<?');
 
 		Assert::equal([
-			$this->createToken('<?', 1),
+			$this->token('<?', Lexer::T_OPEN_TAG, 1),
 		], $tokens);
-
-		Assert::same(Lexer::T_OPEN_TAG, $tokens[0]['type']);
 	}
 
 }

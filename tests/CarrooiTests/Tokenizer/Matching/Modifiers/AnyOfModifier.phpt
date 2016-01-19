@@ -37,11 +37,11 @@ class AnyOfModifierTest extends TestCase
 		$match = $mb->match($tokens);
 
 		Assert::equal([
-			$this->createToken('Test', 17),
-			$this->createToken('\\', 21),
-			$this->createToken('Test2', 22),
-			$this->createToken('\\', 27),
-			$this->createToken('Test3', 28),
+			$this->token('Test',  Lexer::T_STRING,       17),
+			$this->token('\\',    Lexer::T_NS_SEPARATOR, 21),
+			$this->token('Test2', Lexer::T_STRING,       22),
+			$this->token('\\',    Lexer::T_NS_SEPARATOR, 27),
+			$this->token('Test3', Lexer::T_STRING,       28),
 		], $match);
 	}
 

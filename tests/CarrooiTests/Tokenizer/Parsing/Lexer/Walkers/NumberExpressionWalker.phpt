@@ -9,7 +9,6 @@
 
 namespace CarrooiTests\Tokenizer\Parsing\Lexer\Walkers;
 
-use Carrooi\Tokenizer\Parsing\AST\ConstantDeclaration;
 use Carrooi\Tokenizer\Parsing\AST\NumberExpression;
 use Carrooi\Tokenizer\Parsing\Lexer;
 use Carrooi\Tokenizer\Tokenizer;
@@ -39,8 +38,8 @@ class NumberExpressionWalkerTest extends TestCase
 
 		Assert::equal([
 			null,
-			$this->createToken(' ', 6),
-			$this->createToken('5', 7),
+			$this->token(' ', Lexer::T_WHITESPACE, 6),
+			$this->token('5', Lexer::T_LNUMBER,    7),
 		], $number->tokens);
 	}
 
@@ -58,8 +57,8 @@ class NumberExpressionWalkerTest extends TestCase
 
 		Assert::equal([
 			null,
-			$this->createToken(' ', 6),
-			$this->createToken('5.69', 7),
+			$this->token(' ',    Lexer::T_WHITESPACE, 6),
+			$this->token('5.69', Lexer::T_DNUMBER,    7),
 		], $number->tokens);
 	}
 
@@ -76,9 +75,9 @@ class NumberExpressionWalkerTest extends TestCase
 		Assert::false($number->plus);
 
 		Assert::equal([
-			$this->createToken('-', 7),
+			$this->token('-', Lexer::T_MINUS, 7),
 			null,
-			$this->createToken('5', 8),
+			$this->token('5', Lexer::T_LNUMBER, 8),
 		], $number->tokens);
 	}
 
@@ -95,9 +94,9 @@ class NumberExpressionWalkerTest extends TestCase
 		Assert::false($number->plus);
 
 		Assert::equal([
-			$this->createToken('-', 7),
-			$this->createToken(' ', 8),
-			$this->createToken('5', 9),
+			$this->token('-', Lexer::T_MINUS,      7),
+			$this->token(' ', Lexer::T_WHITESPACE, 8),
+			$this->token('5', Lexer::T_LNUMBER,    9),
 		], $number->tokens);
 	}
 

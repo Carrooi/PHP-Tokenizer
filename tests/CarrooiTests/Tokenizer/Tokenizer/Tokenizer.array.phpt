@@ -9,6 +9,7 @@
 
 namespace CarrooiTests\Tokenizer\Tokenizer;
 
+use Carrooi\Tokenizer\Parsing\Lexer;
 use Carrooi\Tokenizer\Tokenizer;
 use CarrooiTests\Tokenizer\TestCase;
 use Tester\Assert;
@@ -38,29 +39,29 @@ PHP;
 		$tokens = Tokenizer::tokenize($code);
 
 		Assert::equal([
-			$this->createToken('<?php', 1),
-			$this->createToken("\n\n", 6),
-			$this->createToken('[', 8, 3),
-			$this->createToken("\n", 9, 3),
-			$this->createToken("\t", 10, 4),
-			$this->createToken("'first'", 11, 4),
-			$this->createToken(' ', 18, 4),
-			$this->createToken('=>', 19, 4),
-			$this->createToken(' ', 21, 4),
-			$this->createToken("'First element'", 22, 4),
-			$this->createToken(',', 37, 4),
-			$this->createToken("\n", 38, 4),
-			$this->createToken("\t", 39, 5),
-			$this->createToken("'second'", 40, 5),
-			$this->createToken(' ', 48, 5),
-			$this->createToken('=>', 49, 5),
-			$this->createToken(' ', 51, 5),
-			$this->createToken("'Second element'", 52, 5),
-			$this->createToken(',', 68, 5),
-			$this->createToken("\n", 69, 5),
-			$this->createToken(']', 70, 6),
-			$this->createToken(';', 71, 6),
-			$this->createToken("\n", 72, 6),
+			$this->token('<?php',            Lexer::T_OPEN_TAG,                 1),
+			$this->token("\n\n",             Lexer::T_NEW_LINE,                 6),
+			$this->token('[',                Lexer::T_SQUARE_BRACKET_OPEN,      8,  3),
+			$this->token("\n",               Lexer::T_NEW_LINE,                 9,  3),
+			$this->token("\t",               Lexer::T_TAB,                      10, 4),
+			$this->token("'first'",          Lexer::T_CONSTANT_ENCAPSED_STRING, 11, 4),
+			$this->token(' ',                Lexer::T_WHITESPACE,               18, 4),
+			$this->token('=>',               Lexer::T_DOUBLE_ARROW,             19, 4),
+			$this->token(' ',                Lexer::T_WHITESPACE,               21, 4),
+			$this->token("'First element'",  Lexer::T_CONSTANT_ENCAPSED_STRING, 22, 4),
+			$this->token(',',                Lexer::T_COMMA,                    37, 4),
+			$this->token("\n",               Lexer::T_NEW_LINE,                 38, 4),
+			$this->token("\t",               Lexer::T_TAB,                      39, 5),
+			$this->token("'second'",         Lexer::T_CONSTANT_ENCAPSED_STRING, 40, 5),
+			$this->token(' ',                Lexer::T_WHITESPACE,               48, 5),
+			$this->token('=>',               Lexer::T_DOUBLE_ARROW,             49, 5),
+			$this->token(' ',                Lexer::T_WHITESPACE,               51, 5),
+			$this->token("'Second element'", Lexer::T_CONSTANT_ENCAPSED_STRING, 52, 5),
+			$this->token(',',                Lexer::T_COMMA,                    68, 5),
+			$this->token("\n",               Lexer::T_NEW_LINE,                 69, 5),
+			$this->token(']',                Lexer::T_SQUARE_BRACKET_CLOSE,     70, 6),
+			$this->token(';',                Lexer::T_SEMICOLON,                71, 6),
+			$this->token("\n",               Lexer::T_NEW_LINE,                 72, 6),
 		], $tokens);
 	}
 

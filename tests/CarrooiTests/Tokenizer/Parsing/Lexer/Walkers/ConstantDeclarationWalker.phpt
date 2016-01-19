@@ -46,9 +46,9 @@ class ConstantDeclarationWalkerTest extends TestCase
 		Assert::type(ConstantDeclaration::class, $constant);
 		Assert::same('TEST', $constant->name);
 		Assert::equal([
-			$this->createToken('const', 7),
-			$this->createToken(' ', 12),
-			$this->createToken('TEST', 13),
+			$this->token('const', Lexer::T_CONST,      7),
+			$this->token(' ',     Lexer::T_WHITESPACE, 12),
+			$this->token('TEST',  Lexer::T_STRING,     13),
 		], $constant->tokens);
 	}
 
