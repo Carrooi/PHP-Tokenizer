@@ -29,12 +29,10 @@ class Tokenizer_NullTest extends TestCase
 		$tokens = Tokenizer::tokenize('<?php NULL');
 
 		Assert::equal([
-			$this->createToken('<?php', 1),
-			$this->createToken(' ', 6),
-			$this->createToken('NULL', 7),
+			$this->token('<?php', Lexer::T_OPEN_TAG,   1),
+			$this->token(' ',     Lexer::T_WHITESPACE, 6),
+			$this->token('NULL',  Lexer::T_NULL,       7),
 		], $tokens);
-
-		Assert::same(Lexer::T_NULL, $tokens[2]['type']);
 	}
 
 }

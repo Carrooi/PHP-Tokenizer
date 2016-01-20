@@ -29,12 +29,10 @@ class Tokenizer_UnknownTest extends TestCase
 		$tokens = Tokenizer::tokenize('<?php ;');
 
 		Assert::equal([
-			$this->createToken('<?php', 1),
-			$this->createToken(' ', 6),
-			$this->createToken(';', 7),
+			$this->token('<?php', Lexer::T_OPEN_TAG,   1),
+			$this->token(' ',     Lexer::T_WHITESPACE, 6),
+			$this->token(';',     Lexer::T_SEMICOLON,  7),
 		], $tokens);
-
-		Assert::same(Lexer::T_SEMICOLON, $tokens[2]['type']);
 	}
 
 
@@ -43,12 +41,10 @@ class Tokenizer_UnknownTest extends TestCase
 		$tokens = Tokenizer::tokenize("<?php\n;");
 
 		Assert::equal([
-			$this->createToken('<?php', 1),
-			$this->createToken("\n", 6),
-			$this->createToken(';', 7, 2),
+			$this->token('<?php', Lexer::T_OPEN_TAG,  1),
+			$this->token("\n",    Lexer::T_NEW_LINE,  6),
+			$this->token(';',     Lexer::T_SEMICOLON, 7, 2),
 		], $tokens);
-
-		Assert::same(Lexer::T_SEMICOLON, $tokens[2]['type']);
 	}
 
 
@@ -57,13 +53,11 @@ class Tokenizer_UnknownTest extends TestCase
 		$tokens = Tokenizer::tokenize("<?php\n ;");
 
 		Assert::equal([
-			$this->createToken('<?php', 1),
-			$this->createToken("\n", 6),
-			$this->createToken(' ', 7, 2),
-			$this->createToken(';', 8, 2),
+			$this->token('<?php', Lexer::T_OPEN_TAG,   1),
+			$this->token("\n",    Lexer::T_NEW_LINE,   6),
+			$this->token(' ',     Lexer::T_WHITESPACE, 7, 2),
+			$this->token(';',     Lexer::T_SEMICOLON,  8, 2),
 		], $tokens);
-
-		Assert::same(Lexer::T_SEMICOLON, $tokens[3]['type']);
 	}
 
 }

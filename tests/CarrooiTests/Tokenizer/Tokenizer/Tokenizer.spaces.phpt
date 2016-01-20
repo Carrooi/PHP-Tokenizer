@@ -29,11 +29,9 @@ class Tokenizer_SpacesTest extends TestCase
 		$tokens = Tokenizer::tokenize('<?php ');
 
 		Assert::equal([
-			$this->createToken('<?php', 1),
-			$this->createToken(' ', 6),
+			$this->token('<?php', Lexer::T_OPEN_TAG,   1),
+			$this->Token(' ',     Lexer::T_WHITESPACE, 6),
 		], $tokens);
-
-		Assert::same(Lexer::T_WHITESPACE, $tokens[1]['type']);
 	}
 
 
@@ -42,11 +40,9 @@ class Tokenizer_SpacesTest extends TestCase
 		$tokens = Tokenizer::tokenize('<?php     ');
 
 		Assert::equal([
-			$this->createToken('<?php', 1),
-			$this->createToken('     ', 6),
+			$this->token('<?php', Lexer::T_OPEN_TAG,   1),
+			$this->token('     ', Lexer::T_WHITESPACE, 6),
 		], $tokens);
-
-		Assert::same(Lexer::T_WHITESPACE, $tokens[1]['type']);
 	}
 
 
@@ -55,11 +51,9 @@ class Tokenizer_SpacesTest extends TestCase
 		$tokens = Tokenizer::tokenize("<?php\n");
 
 		Assert::equal([
-			$this->createToken('<?php', 1),
-			$this->createToken("\n", 6),
+			$this->token('<?php', Lexer::T_OPEN_TAG, 1),
+			$this->token("\n",    Lexer::T_NEW_LINE, 6),
 		], $tokens);
-
-		Assert::same(Lexer::T_NEW_LINE, $tokens[1]['type']);
 	}
 
 
@@ -68,11 +62,9 @@ class Tokenizer_SpacesTest extends TestCase
 		$tokens = Tokenizer::tokenize("<?php\n\r\n\r");
 
 		Assert::equal([
-			$this->createToken('<?php', 1),
-			$this->createToken("\n\r\n\r", 6),
+			$this->token('<?php',    Lexer::T_OPEN_TAG, 1),
+			$this->token("\n\r\n\r", Lexer::T_NEW_LINE, 6),
 		], $tokens);
-
-		Assert::same(Lexer::T_NEW_LINE, $tokens[1]['type']);
 	}
 
 
@@ -81,15 +73,12 @@ class Tokenizer_SpacesTest extends TestCase
 		$tokens = Tokenizer::tokenize("<?php\n\necho\n\n;");
 
 		Assert::equal([
-			$this->createToken('<?php', 1),
-			$this->createToken("\n\n", 6),
-			$this->createToken('echo', 8, 3),
-			$this->createToken("\n\n", 12, 3),
-			$this->createToken(';', 14, 5),
+			$this->token('<?php', Lexer::T_OPEN_TAG,  1),
+			$this->token("\n\n",  Lexer::T_NEW_LINE,  6),
+			$this->token('echo',  Lexer::T_ECHO,      8,  3),
+			$this->token("\n\n",  Lexer::T_NEW_LINE,  12, 3),
+			$this->token(';',     Lexer::T_SEMICOLON, 14, 5),
 		], $tokens);
-
-		Assert::same(Lexer::T_NEW_LINE, $tokens[1]['type']);
-		Assert::same(Lexer::T_NEW_LINE, $tokens[3]['type']);
 	}
 
 
@@ -98,11 +87,9 @@ class Tokenizer_SpacesTest extends TestCase
 		$tokens = Tokenizer::tokenize("<?php\t");
 
 		Assert::equal([
-			$this->createToken('<?php', 1),
-			$this->createToken("\t", 6),
+			$this->token('<?php', Lexer::T_OPEN_TAG, 1),
+			$this->token("\t",    Lexer::T_TAB,      6),
 		], $tokens);
-
-		Assert::same(Lexer::T_TAB, $tokens[1]['type']);
 	}
 
 
@@ -111,11 +98,9 @@ class Tokenizer_SpacesTest extends TestCase
 		$tokens = Tokenizer::tokenize("<?php\t\t\t\t");
 
 		Assert::equal([
-			$this->createToken('<?php', 1),
-			$this->createToken("\t\t\t\t", 6),
+			$this->token('<?php',    Lexer::T_OPEN_TAG, 1),
+			$this->token("\t\t\t\t", Lexer::T_TAB,      6),
 		], $tokens);
-
-		Assert::same(Lexer::T_TAB, $tokens[1]['type']);
 	}
 
 
@@ -124,25 +109,16 @@ class Tokenizer_SpacesTest extends TestCase
 		$tokens = Tokenizer::tokenize("<?php \n\r\t\t \r\n\t \t\t");
 
 		Assert::equal([
-			$this->createToken('<?php', 1),
-			$this->createToken(' ', 6),
-			$this->createToken("\n\r", 7),
-			$this->createToken("\t\t", 9, 3),
-			$this->createToken(' ', 11, 3),
-			$this->createToken("\r\n", 12, 3),
-			$this->createToken("\t", 14, 4),
-			$this->createToken(' ', 15, 4),
-			$this->createToken("\t\t", 16, 4),
+			$this->token('<?php', Lexer::T_OPEN_TAG,   1),
+			$this->token(' ',     Lexer::T_WHITESPACE, 6),
+			$this->token("\n\r",  Lexer::T_NEW_LINE,   7),
+			$this->token("\t\t",  Lexer::T_TAB,        9, 3),
+			$this->token(' ',     Lexer::T_WHITESPACE, 11, 3),
+			$this->token("\r\n",  Lexer::T_NEW_LINE,   12, 3),
+			$this->token("\t",    Lexer::T_TAB,        14, 4),
+			$this->token(' ',     Lexer::T_WHITESPACE, 15, 4),
+			$this->token("\t\t",  Lexer::T_TAB,        16, 4),
 		], $tokens);
-
-		Assert::same(Lexer::T_WHITESPACE, $tokens[1]['type']);
-		Assert::same(Lexer::T_NEW_LINE, $tokens[2]['type']);
-		Assert::same(Lexer::T_TAB, $tokens[3]['type']);
-		Assert::same(Lexer::T_WHITESPACE, $tokens[4]['type']);
-		Assert::same(Lexer::T_NEW_LINE, $tokens[5]['type']);
-		Assert::same(Lexer::T_TAB, $tokens[6]['type']);
-		Assert::same(Lexer::T_WHITESPACE, $tokens[7]['type']);
-		Assert::same(Lexer::T_TAB, $tokens[8]['type']);
 
 	}
 
@@ -152,24 +128,15 @@ class Tokenizer_SpacesTest extends TestCase
 		$tokens = Tokenizer::tokenize("\t\n\n\n  \n\t\t \n\t");
 
 		Assert::equal([
-			$this->createToken("\t", 1),
-			$this->createToken("\n\n\n", 2),
-			$this->createToken('  ', 5, 4),
-			$this->createToken("\n", 7, 4),
-			$this->createToken("\t\t", 8, 5),
-			$this->createToken(' ', 10, 5),
-			$this->createToken("\n", 11, 5),
-			$this->createToken("\t", 12, 6),
+			$this->token("\t",     Lexer::T_TAB,        1),
+			$this->token("\n\n\n", Lexer::T_NEW_LINE,   2),
+			$this->token('  ',     Lexer::T_WHITESPACE, 5,  4),
+			$this->token("\n",     Lexer::T_NEW_LINE,   7,  4),
+			$this->token("\t\t",   Lexer::T_TAB,        8,  5),
+			$this->token(' ',      Lexer::T_WHITESPACE, 10, 5),
+			$this->token("\n",     Lexer::T_NEW_LINE,   11, 5),
+			$this->token("\t",     Lexer::T_TAB,        12, 6),
 		], $tokens);
-
-		Assert::same(Lexer::T_TAB, $tokens[0]['type']);
-		Assert::same(Lexer::T_NEW_LINE, $tokens[1]['type']);
-		Assert::same(Lexer::T_WHITESPACE, $tokens[2]['type']);
-		Assert::same(Lexer::T_NEW_LINE, $tokens[3]['type']);
-		Assert::same(Lexer::T_TAB, $tokens[4]['type']);
-		Assert::same(Lexer::T_WHITESPACE, $tokens[5]['type']);
-		Assert::same(Lexer::T_NEW_LINE, $tokens[6]['type']);
-		Assert::same(Lexer::T_TAB, $tokens[7]['type']);
 	}
 
 }

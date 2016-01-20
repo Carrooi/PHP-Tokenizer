@@ -41,11 +41,11 @@ class NotRequiredModifierTest extends TestCase
 		$match = $matcher->match($tokens);
 
 		Assert::equal([
-			$this->createToken('1', 7),
-			$this->createToken(',', 8),
-			$this->createToken('A', 9),
-			$this->createToken(',', 10),
-			$this->createToken('2', 11),
+			$this->token('1', Lexer::T_LNUMBER, 7),
+			$this->token(',', Lexer::T_COMMA,   8),
+			$this->token('A', Lexer::T_STRING,  9),
+			$this->token(',', Lexer::T_COMMA,   10),
+			$this->token('2', Lexer::T_LNUMBER, 11),
 		], $match);
 	}
 
@@ -66,11 +66,11 @@ class NotRequiredModifierTest extends TestCase
 		$match = $matcher->match($tokens);
 
 		Assert::equal([
-			$this->createToken('1', 7),
-			$this->createToken(',', 8),
+			$this->token('1', Lexer::T_LNUMBER, 7),
+			$this->token(',', Lexer::T_COMMA,   8),
 			null,
-			$this->createToken(',', 9),
-			$this->createToken('2', 10),
+			$this->token(',', Lexer::T_COMMA,   9),
+			$this->token('2', Lexer::T_LNUMBER, 10),
 		], $match);
 	}
 

@@ -39,11 +39,11 @@ class MatchBuilder_SubMatchBuilderTest extends TestCase
 		$match = $mb->match($tokens);
 
 		Assert::equal([
-			$this->createToken('(', 10),
+			$this->token('(', Lexer::T_PARENTHESIS_OPEN, 10),
 			[
-				$this->createToken('true', 11),
+				$this->token('true', Lexer::T_TRUE, 11),
 			],
-			$this->createToken(')', 15),
+			$this->token(')', Lexer::T_PARENTHESIS_CLOSE, 15),
 		], $match);
 	}
 
@@ -71,10 +71,10 @@ class MatchBuilder_SubMatchBuilderTest extends TestCase
 
 		Assert::equal([
 			[
-				$this->createToken('final', 7),
-				$this->createToken(' ', 12),
+				$this->token('final', Lexer::T_FINAL,      7),
+				$this->token(' ',     Lexer::T_WHITESPACE, 12),
 			],
-			$this->createToken('class', 13),
+			$this->token('class', Lexer::T_CLASS, 13),
 		], $match);
 	}
 
