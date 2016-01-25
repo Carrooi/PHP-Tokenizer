@@ -3,7 +3,7 @@
 /**
  * Test: Carrooi\Tokenizer\Matching\MatchBuilder
  *
- * @testCase CarrooiTests\Tokenizer\Matching\MatchBuilder_SubMatchBuilderTest
+ * @testCase CarrooiTests\Tokenizer\Matching\Matcher_SubMatchBuilderTest
  * @author David Kudera
  */
 
@@ -21,7 +21,7 @@ require_once __DIR__. '/../../bootstrap.php';
  *
  * @author David Kudera <kudera.d@gmail.com>
  */
-class MatchBuilder_SubMatchBuilderTest extends TestCase
+class Matcher_SubMatchBuilderTest extends TestCase
 {
 
 
@@ -80,4 +80,4 @@ class MatchBuilder_SubMatchBuilderTest extends TestCase
 
 }
 
-run(new MatchBuilder_SubMatchBuilderTest);
+run(new Matcher_SubMatchBuilderTest);
