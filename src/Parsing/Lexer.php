@@ -351,7 +351,7 @@ class Lexer
 	 */
 	public function walkNumber()
 	{
-		return $this->walkers->number()->match($this->tokens);
+		return $this->walkers->number()->match($this);
 	}
 
 
@@ -360,7 +360,7 @@ class Lexer
 	 */
 	public function walkNamespaceDeclaration()
 	{
-		return $this->walkers->namespaceDeclaration()->match($this->tokens);
+		return $this->walkers->namespaceDeclaration()->match($this);
 	}
 
 
@@ -369,7 +369,7 @@ class Lexer
 	 */
 	public function walkParenthesis()
 	{
-		return $this->walkers->parenthesis()->match($this->tokens);
+		return $this->walkers->parenthesis()->match($this);
 	}
 
 
@@ -378,7 +378,7 @@ class Lexer
 	 */
 	public function walkNewInstance()
 	{
-		return $this->walkers->newInstance()->match($this->tokens);
+		return $this->walkers->newInstance()->match($this);
 	}
 
 
@@ -387,7 +387,7 @@ class Lexer
 	 */
 	public function walkConstant()
 	{
-		return $this->walkers->constant()->match($this->tokens);
+		return $this->walkers->constant()->match($this);
 	}
 
 
@@ -396,7 +396,7 @@ class Lexer
 	 */
 	public function walkClassDeclaration()
 	{
-		return $this->walkers->classDeclaration()->match($this->tokens);
+		return $this->walkers->classDeclaration()->match($this);
 	}
 
 
