@@ -137,6 +137,48 @@ class NewInstanceWalkerTest extends TestCase
 		], $instance->parenthesis->tokens);
 	}
 
+
+	public function testWalkNewClass_variable_simple_withoutParenthesis()
+	{
+		$tokens = Tokenizer::tokenize('<?php new $class;');
+		$lexer = new Lexer($tokens);
+
+		$class = $lexer->walkNewInstance();
+
+		Assert::type(NewInstanceExpression::class, $class);
+		Assert::same('$class', $class->name);
+		Assert::null($class->parenthesis);
+
+		Assert::equal([
+			$this->token('new',    Lexer::T_NEW,        7),
+			$this->token(' ',      Lexer::T_WHITESPACE, 10),
+			$this->token('$class', Lexer::T_VARIABLE,   11),
+		], $class->tokens);
+	}
+
+
+	public function testWalkNewClass_variable_simple_withParenthesis()
+	{
+		$tokens = Tokenizer::tokenize('<?php new $class (false);');
+		$lexer = new Lexer($tokens);
+
+		$class = $lexer->walkNewInstance();
+
+		Assert::type(NewInstanceExpression::class, $class);
+		Assert::same('$class', $class->name);
+		Assert::type(ParenthesisExpression::class, $class->parenthesis);
+
+		Assert::equal([
+			$this->token('new',    Lexer::T_NEW,               7),
+			$this->token(' ',      Lexer::T_WHITESPACE,        10),
+			$this->token('$class', Lexer::T_VARIABLE,          11),
+			$this->token(' ',      Lexer::T_WHITESPACE,        17),
+			$this->token('(',      Lexer::T_PARENTHESIS_OPEN,  18),
+			$this->token('false',  Lexer::T_FALSE,             19),
+			$this->token(')',      Lexer::T_PARENTHESIS_CLOSE, 24),
+		], $class->tokens);
+	}
+
 }
 
 run(new NewInstanceWalkerTest());

@@ -139,7 +139,10 @@ class Walkers
 		$matcher->select(
 			Lexer::T_NEW,
 			Lexer::T_WHITESPACE,
-			$matcher->expr()->anyOf(Lexer::T_STRING, Lexer::T_NS_SEPARATOR),
+			$matcher->expr()->anyOf(
+				$matcher->expr()->anyOf(Lexer::T_STRING, Lexer::T_NS_SEPARATOR),
+				Lexer::T_VARIABLE
+			),
 			$matcher->expr()->notRequired($parenthesisMatcher)
 		);
 
