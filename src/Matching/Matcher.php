@@ -98,8 +98,10 @@ class Matcher
 		reset($this->select);
 		$result = [];
 
+		$initPosition = $lexer->position;
+
 		while (list($key, $select) = each($this->select)) {
-			if ($lexer->position === 0) {
+			if ($lexer->position === $initPosition) {
 				$match = $this->skipUntil($lexer, $select);
 
 			} else {
