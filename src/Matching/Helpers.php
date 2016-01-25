@@ -61,6 +61,22 @@ class Helpers
 
 	/**
 	 * @param array $tokens
+	 * @return bool
+	 */
+	public static function isListOfValidTokens(array $tokens)
+	{
+		foreach ($tokens as $token) {
+			if (!static::isValidToken($token)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+
+	/**
+	 * @param array $tokens
 	 * @return array
 	 */
 	public static function flattenTokens(array $tokens)

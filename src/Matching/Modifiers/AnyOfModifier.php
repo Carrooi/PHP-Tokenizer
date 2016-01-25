@@ -38,13 +38,25 @@ class AnyOfModifier extends AbstractModifier
 	 */
 	function match(Lexer $lexer)
 	{
-		foreach ($this->tokens as &$token) {
+		$tokens = [];
+
+		foreach ($this->tokens as $token) {
 			if ($token instanceof AbstractModifier) {
 				$token = $this->builder->_matchToken($lexer, $token);
+
+				if (is_array($token) && Helpers::isListOfValidTokens($token)) {
+					return $token;
+
+				} elseif ($token !== false) {
+					$tokens[] = $token;
+
+				}
+			} else {
+				$tokens[] = $token;
 			}
 		}
 
-		if (!$lexer->isNextToken($this->tokens)) {
+		if (!$lexer->isNextToken($tokens)) {
 			return false;
 		}
 
@@ -57,7 +69,7 @@ class AnyOfModifier extends AbstractModifier
 				break;
 			}
 
-			if (Helpers::isTokenA($peek['type'], $this->tokens)) {
+			if (Helpers::isTokenA($peek['type'], $tokens)) {
 				$result[] = $peek;
 
 			} else {

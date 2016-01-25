@@ -25,9 +25,9 @@ class AnyOfModifierTest extends TestCase
 {
 
 
-	public function testMatchSimple()
+	public function testMatch_simple()
 	{
-		$tokens = Tokenizer::tokenize('<?php namespace Test\\Test2\\Test3;');
+		$tokens = Tokenizer::tokenize('<?php namespace Test\\Test2\\Test3');
 
 		$matcher = new Matcher;
 		$matcher->select(
@@ -42,6 +42,26 @@ class AnyOfModifierTest extends TestCase
 			$this->token('Test2', Lexer::T_STRING,       22),
 			$this->token('\\',    Lexer::T_NS_SEPARATOR, 27),
 			$this->token('Test3', Lexer::T_STRING,       28),
+		], $match);
+	}
+
+
+	public function testMatch_insideAnyOf()
+	{
+		$tokens = Tokenizer::tokenize('<?php new A');
+
+		$matcher = new Matcher;
+		$matcher->select(
+			$matcher->expr()->anyOf(
+				$matcher->expr()->anyOf(Lexer::T_STRING, Lexer::T_NS_SEPARATOR),
+				Lexer::T_VARIABLE
+			)
+		);
+
+		$match = $matcher->match($tokens);
+
+		Assert::equal([
+			$this->token('A', Lexer::T_STRING, 11),
 		], $match);
 	}
 
