@@ -374,6 +374,15 @@ class Lexer
 
 
 	/**
+	 * @return \Carrooi\Tokenizer\Parsing\AST\ClassNameExpression|null
+	 */
+	public function walkClassName()
+	{
+		return $this->walkers->className()->match($this);
+	}
+
+
+	/**
 	 * @return \Carrooi\Tokenizer\Parsing\AST\NewInstanceExpression|null
 	 */
 	public function walkNewInstance()

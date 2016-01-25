@@ -1,6 +1,7 @@
 <?php
 
 namespace Carrooi\Tokenizer\Parsing\AST;
+use Carrooi\Tokenizer\InvalidArgumentException;
 
 /**
  *
@@ -19,10 +20,10 @@ class ClassDeclaration extends Entity
 	/** @var bool */
 	public $abstract = false;
 
-	/** @var string|null */
+	/** @var \Carrooi\Tokenizer\Parsing\AST\ClassNameExpression|null */
 	public $extends = null;
 
-	/** @var array */
+	/** @var \Carrooi\Tokenizer\Parsing\AST\ClassNameExpression[] */
 	public $implements = [];
 
 

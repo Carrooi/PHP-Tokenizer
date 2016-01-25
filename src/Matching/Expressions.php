@@ -26,7 +26,7 @@ class Expressions
 
 
 	/**
-	 * @param int|\Carrooi\Tokenizer\Matching\Modifiers\AbstractModifier $tokens
+	 * @param int|\Carrooi\Tokenizer\Matching\Modifiers\AbstractModifier|\Carrooi\Tokenizer\Matching\Matcher $tokens
 	 * @return \Carrooi\Tokenizer\Matching\Modifiers\AnyOfModifier
 	 */
 	public function anyOf($tokens)

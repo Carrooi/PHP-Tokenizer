@@ -10,15 +10,15 @@ class NamespaceDeclaration extends Entity
 {
 
 
-	/** @var string */
+	/** @var \Carrooi\Tokenizer\Parsing\AST\ClassNameExpression */
 	public $name;
 
 
 	/**
 	 * @param array $tokens
-	 * @param string $name
+	 * @param \Carrooi\Tokenizer\Parsing\AST\ClassNameExpression $name
 	 */
-	public function __construct(array $tokens, $name)
+	public function __construct(array $tokens, ClassNameExpression $name)
 	{
 		parent::__construct($tokens);
 

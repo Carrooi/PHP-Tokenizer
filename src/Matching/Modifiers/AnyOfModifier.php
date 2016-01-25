@@ -41,7 +41,7 @@ class AnyOfModifier extends AbstractModifier
 		$tokens = [];
 
 		foreach ($this->tokens as $token) {
-			if ($token instanceof AbstractModifier) {
+			if ($token instanceof AbstractModifier || $token instanceof Matcher) {
 				$token = $this->builder->_matchToken($lexer, $token);
 
 				if (is_array($token) && Helpers::isListOfValidTokens($token)) {

@@ -10,6 +10,7 @@
 namespace CarrooiTests\Tokenizer\Parsing\Lexer\Walkers;
 
 use Carrooi\Tokenizer\Parsing\AST\ClassDeclaration;
+use Carrooi\Tokenizer\Parsing\AST\ClassNameExpression;
 use Carrooi\Tokenizer\Parsing\Lexer;
 use Carrooi\Tokenizer\Tokenizer;
 use CarrooiTests\Tokenizer\TestCase;
@@ -81,10 +82,11 @@ class ClassDeclarationWalkerTest extends TestCase
 		$class = $lexer->walkClassDeclaration();
 
 		Assert::type(ClassDeclaration::class, $class);
+		Assert::type(ClassNameExpression::class, $class->extends);
 		Assert::same('Test', $class->name);
 		Assert::false($class->abstract);
 		Assert::false($class->final);
-		Assert::same('App\BaseTest', $class->extends);
+		Assert::same('App\BaseTest', $class->extends->value);
 		Assert::count(0, $class->implements);
 	}
 

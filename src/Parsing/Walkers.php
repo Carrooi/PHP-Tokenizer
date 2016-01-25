@@ -6,6 +6,7 @@ use Carrooi\Tokenizer\Matching\Helpers;
 use Carrooi\Tokenizer\Matching\Matcher;
 use Carrooi\Tokenizer\Matching\ResultMapping;
 use Carrooi\Tokenizer\Parsing\AST\ClassDeclaration;
+use Carrooi\Tokenizer\Parsing\AST\ClassNameExpression;
 use Carrooi\Tokenizer\Parsing\AST\NumberExpression;
 
 /**
@@ -73,7 +74,7 @@ class Walkers
 		$matcher->select(
 			Lexer::T_NAMESPACE,
 			Lexer::T_WHITESPACE,
-			$matcher->expr()->anyOf(Lexer::T_STRING, Lexer::T_NS_SEPARATOR)
+			$this->className()
 		);
 
 		$matcher->map(new ResultMapping(function($namespace) {
@@ -81,12 +82,7 @@ class Walkers
 				return null;
 			}
 
-			$name = array_map(function(array $name) {
-				return $name['value'];
-			}, array_slice($namespace, 2));
-			$name = implode('', $name);
-
-			return new AST\NamespaceDeclaration($namespace, $name);
+			return new AST\NamespaceDeclaration(Helpers::flattenTokens($namespace), $namespace[2]);
 		}));
 
 		return $matcher;
@@ -125,6 +121,35 @@ class Walkers
 	/**
 	 * @return \Carrooi\Tokenizer\Matching\Matcher
 	 */
+	public function className()
+	{
+		$matcher = new Matcher;
+
+		$matcher->select($matcher->expr()->anyOf(
+			Lexer::T_STRING,
+			Lexer::T_NS_SEPARATOR
+		));
+
+		$matcher->map(new ResultMapping(function($className) {
+			if (!$className) {
+				return null;
+			}
+
+			$name = array_map(function(array $token) {
+				return $token['value'];
+			}, $className);
+			$name = implode('', $name);
+
+			return new ClassNameExpression($className, $name);
+		}));
+
+		return $matcher;
+	}
+
+
+	/**
+	 * @return \Carrooi\Tokenizer\Matching\Matcher
+	 */
 	public function newInstance()
 	{
 		$parenthesisMatcher = new Matcher;
@@ -140,7 +165,7 @@ class Walkers
 			Lexer::T_NEW,
 			Lexer::T_WHITESPACE,
 			$matcher->expr()->anyOf(
-				$matcher->expr()->anyOf(Lexer::T_STRING, Lexer::T_NS_SEPARATOR),
+				$this->className(),
 				Lexer::T_VARIABLE
 			),
 			$matcher->expr()->notRequired($parenthesisMatcher)
@@ -151,19 +176,15 @@ class Walkers
 				return null;
 			}
 
-			$nameTokens = array_slice($instance, 2);
 			$parenthesis = null;
 
 			// with parenthesis
 			if (!Helpers::isValidToken($instance[count($instance) - 1])) {
 				$parenthesis = $instance[count($instance) - 1][1];
-				$nameTokens = array_slice($nameTokens, 0, -1);
 			}
 
-			$name = array_map(function(array $token) {
-				return $token['value'];
-			}, $nameTokens);
-			$name = implode('', $name);
+			// ClassNameExpression or $variable
+			$name = is_array($instance[2]) ? $instance[2]['value'] : $instance[2];
 
 			$class = new AST\NewInstanceExpression(Helpers::flattenTokens($instance), $name);
 			$class->parenthesis = $parenthesis;
@@ -219,10 +240,7 @@ class Walkers
 			Lexer::T_WHITESPACE,
 			Lexer::T_EXTENDS,
 			Lexer::T_WHITESPACE,
-			$extendsMatcher->expr()->anyOf(
-				Lexer::T_STRING,
-				Lexer::T_NS_SEPARATOR
-			)
+			$this->className()
 		);
 
 		$implementsMatcher = new Matcher;
@@ -233,7 +251,7 @@ class Walkers
 			$implementsMatcher->expr()->anyOf(
 				Lexer::T_WHITESPACE,
 				Lexer::T_COMMA,
-				Lexer::T_STRING,
+				Lexer::T_STRING,			// todo: use className walker
 				Lexer::T_NS_SEPARATOR
 			)
 		);
@@ -262,13 +280,8 @@ class Walkers
 				}
 			}
 
-			if ($tokens[4]) {
-				$extends = array_map(function(array $token) {
-					return $token['value'];
-				}, array_slice($tokens[4], 3));
-				$extends = implode('', $extends);
-
-				$class->extends = $extends;
+			if ($tokens[4] && $tokens[4][3]) {
+				$class->extends = $tokens[4][3];
 			}
 
 			if ($tokens[5]) {

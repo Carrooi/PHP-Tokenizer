@@ -51,6 +51,10 @@ class Helpers
 	 */
 	public static function isValidToken($token)
 	{
+		if ($token instanceof AST\Entity) {
+			return true;
+		}
+
 		if (!is_array($token)) {
 			return false;
 		}
@@ -84,7 +88,7 @@ class Helpers
 		$result = [];
 
 		foreach ($tokens as $token) {
-			if (static::isValidToken($token)) {
+			if (is_array($token) && static::isValidToken($token)) {
 				$result[] = $token;
 
 			} elseif (is_array($token)) {

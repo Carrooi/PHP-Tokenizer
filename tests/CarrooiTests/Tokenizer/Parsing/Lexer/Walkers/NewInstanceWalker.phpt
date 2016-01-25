@@ -9,6 +9,7 @@
 
 namespace CarrooiTests\Tokenizer\Parsing\Lexer\Walkers;
 
+use Carrooi\Tokenizer\Parsing\AST\ClassNameExpression;
 use Carrooi\Tokenizer\Parsing\AST\NewInstanceExpression;
 use Carrooi\Tokenizer\Parsing\AST\ParenthesisExpression;
 use Carrooi\Tokenizer\Parsing\Lexer;
@@ -45,7 +46,8 @@ class NewInstanceWalkerTest extends TestCase
 		$class = $lexer->walkNewInstance();
 
 		Assert::type(NewInstanceExpression::class, $class);
-		Assert::same('A', $class->name);
+		Assert::type(ClassNameExpression::class, $class->name);
+		Assert::same('A', $class->name->value);
 		Assert::null($class->parenthesis);
 
 		Assert::equal([
@@ -53,6 +55,10 @@ class NewInstanceWalkerTest extends TestCase
 			$this->token(' ',   Lexer::T_WHITESPACE, 10),
 			$this->token('A',   Lexer::T_STRING,     11),
 		], $class->tokens);
+
+		Assert::equal([
+			$this->token('A', Lexer::T_STRING, 11),
+		], $class->name->tokens);
 	}
 
 
@@ -64,7 +70,8 @@ class NewInstanceWalkerTest extends TestCase
 		$class = $lexer->walkNewInstance();
 
 		Assert::type(NewInstanceExpression::class, $class);
-		Assert::same('A\B\C', $class->name);
+		Assert::type(ClassNameExpression::class, $class->name);
+		Assert::same('A\B\C', $class->name->value);
 		Assert::null($class->parenthesis);
 
 		Assert::equal([
@@ -76,6 +83,14 @@ class NewInstanceWalkerTest extends TestCase
 			$this->token('\\',  Lexer::T_NS_SEPARATOR, 14),
 			$this->token('C',   Lexer::T_STRING,       15),
 		], $class->tokens);
+
+		Assert::equal([
+			$this->token('A',   Lexer::T_STRING,       11),
+			$this->token('\\',  Lexer::T_NS_SEPARATOR, 12),
+			$this->token('B',   Lexer::T_STRING,       13),
+			$this->token('\\',  Lexer::T_NS_SEPARATOR, 14),
+			$this->token('C',   Lexer::T_STRING,       15),
+		], $class->name->tokens);
 	}
 
 
@@ -87,8 +102,9 @@ class NewInstanceWalkerTest extends TestCase
 		$class = $lexer->walkNewInstance();
 
 		Assert::type(NewInstanceExpression::class, $class);
-		Assert::same('A', $class->name);
+		Assert::type(ClassNameExpression::class, $class->name);
 		Assert::type(ParenthesisExpression::class, $class->parenthesis);
+		Assert::same('A', $class->name->value);
 		Assert::same('(1)', $class->parenthesis->value);
 
 		Assert::equal([
@@ -99,6 +115,10 @@ class NewInstanceWalkerTest extends TestCase
 			$this->token('1',   Lexer::T_LNUMBER,           13),
 			$this->token(')',   Lexer::T_PARENTHESIS_CLOSE, 14),
 		], $class->tokens);
+
+		Assert::equal([
+			$this->token('A', Lexer::T_STRING, 11),
+		], $class->name->tokens);
 
 		Assert::equal([
 			$this->token('(', Lexer::T_PARENTHESIS_OPEN,  12),
@@ -116,8 +136,9 @@ class NewInstanceWalkerTest extends TestCase
 		$instance = $lexer->walkNewInstance();
 
 		Assert::type(NewInstanceExpression::class, $instance);
-		Assert::same('A', $instance->name);
+		Assert::type(ClassNameExpression::class, $instance->name);
 		Assert::type(ParenthesisExpression::class, $instance->parenthesis);
+		Assert::same('A', $instance->name->value);
 		Assert::same('(1)', $instance->parenthesis->value);
 
 		Assert::equal([
@@ -129,6 +150,10 @@ class NewInstanceWalkerTest extends TestCase
 			$this->token('1',   Lexer::T_LNUMBER,           14),
 			$this->token(')',   Lexer::T_PARENTHESIS_CLOSE, 15),
 		], $instance->tokens);
+
+		Assert::equal([
+			$this->token('A', Lexer::T_STRING, 11),
+		], $instance->name->tokens);
 
 		Assert::equal([
 			$this->token('(', Lexer::T_PARENTHESIS_OPEN,  13),
@@ -181,4 +206,4 @@ class NewInstanceWalkerTest extends TestCase
 
 }
 
-run(new NewInstanceWalkerTest());
+run(new NewInstanceWalkerTest);

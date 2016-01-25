@@ -9,6 +9,7 @@
 
 namespace CarrooiTests\Tokenizer\Parsing\Lexer\Walkers;
 
+use Carrooi\Tokenizer\Parsing\AST\ClassNameExpression;
 use Carrooi\Tokenizer\Parsing\AST\NamespaceDeclaration;
 use Carrooi\Tokenizer\Parsing\Lexer;
 use Carrooi\Tokenizer\Tokenizer;
@@ -44,7 +45,8 @@ class NamespaceDeclarationWalkerTest extends TestCase
 		$namespace = $lexer->walkNamespaceDeclaration();
 
 		Assert::type(NamespaceDeclaration::class, $namespace);
-		Assert::same('A', $namespace->name);
+		Assert::type(ClassNameExpression::class, $namespace->name);
+		Assert::same('A', $namespace->name->value);
 		Assert::equal([
 			$this->token('namespace', Lexer::T_NAMESPACE,  7),
 			$this->token(' ',         Lexer::T_WHITESPACE, 16),
@@ -61,7 +63,8 @@ class NamespaceDeclarationWalkerTest extends TestCase
 		$namespace = $lexer->walkNamespaceDeclaration();
 
 		Assert::type(NamespaceDeclaration::class, $namespace);
-		Assert::same('A\B\C', $namespace->name);
+		Assert::type(ClassNameExpression::class, $namespace->name);
+		Assert::same('A\B\C', $namespace->name->value);
 		Assert::equal([
 			$this->token('namespace', Lexer::T_NAMESPACE,    7),
 			$this->token(' ',         Lexer::T_WHITESPACE,   16),
@@ -84,7 +87,8 @@ class NamespaceDeclarationWalkerTest extends TestCase
 		$namespace = $lexer->walkNamespaceDeclaration();
 
 		Assert::type(NamespaceDeclaration::class, $namespace);
-		Assert::same('\A\B\C', $namespace->name);
+		Assert::type(ClassNameExpression::class, $namespace->name);
+		Assert::same('\A\B\C', $namespace->name->value);
 		Assert::equal([
 			$this->token('namespace', Lexer::T_NAMESPACE,    7),
 			$this->token(' ',         Lexer::T_WHITESPACE,   16),
