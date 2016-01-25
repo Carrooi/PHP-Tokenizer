@@ -72,13 +72,20 @@ class Matcher
 
 
 	/**
-	 * @param array $tokens
+	 * @param \Carrooi\Tokenizer\Parsing\Lexer|array $tokens
 	 * @return array|null
 	 */
-	public function match(array $tokens)
+	public function match($tokens)
 	{
-		$lexer = new Lexer($tokens);
-		return $this->doMatch($lexer);
+		if (is_array($tokens)) {
+			$tokens = new Lexer($tokens);
+		}
+
+		if (!$tokens instanceof Lexer) {
+			throw new InvalidArgumentException(__METHOD__. ': argument must be an array of tokens or instance of Lexer.');
+		}
+
+		return $this->doMatch($tokens);
 	}
 
 
