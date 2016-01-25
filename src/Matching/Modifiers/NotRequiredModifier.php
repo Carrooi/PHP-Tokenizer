@@ -2,7 +2,7 @@
 
 namespace Carrooi\Tokenizer\Matching\Modifiers;
 
-use Carrooi\Tokenizer\Matching\MatchBuilder;
+use Carrooi\Tokenizer\Matching\Matcher;
 use Carrooi\Tokenizer\Parsing\Lexer;
 
 /**
@@ -13,18 +13,18 @@ class NotRequiredModifier extends AbstractModifier
 {
 
 
-	/** @var \Carrooi\Tokenizer\Matching\MatchBuilder */
+	/** @var \Carrooi\Tokenizer\Matching\Matcher */
 	private $builder;
 
-	/** @var int|\Carrooi\Tokenizer\Matching\Modifiers\AbstractModifier|\Carrooi\Tokenizer\Matching\MatchBuilder */
+	/** @var int|\Carrooi\Tokenizer\Matching\Modifiers\AbstractModifier|\Carrooi\Tokenizer\Matching\Matcher */
 	private $token;
 
 
 	/**
-	 * @param \Carrooi\Tokenizer\Matching\MatchBuilder $builder
-	 * @param int|\Carrooi\Tokenizer\Matching\Modifiers\AbstractModifier|\Carrooi\Tokenizer\Matching\MatchBuilder $token
+	 * @param \Carrooi\Tokenizer\Matching\Matcher $builder
+	 * @param int|\Carrooi\Tokenizer\Matching\Modifiers\AbstractModifier|\Carrooi\Tokenizer\Matching\Matcher $token
 	 */
-	public function __construct(MatchBuilder $builder, $token)
+	public function __construct(Matcher $builder, $token)
 	{
 		$this->builder = $builder;
 		$this->token = $token;
@@ -37,7 +37,7 @@ class NotRequiredModifier extends AbstractModifier
 	 */
 	function match(Lexer $lexer)
 	{
-		$token = ($this->token instanceof AbstractModifier) || ($this->token instanceof MatchBuilder) ?
+		$token = ($this->token instanceof AbstractModifier) || ($this->token instanceof Matcher) ?
 			$this->builder->_matchToken($lexer, $this->token) :
 			$this->token;
 

@@ -9,7 +9,7 @@
 
 namespace CarrooiTests\Tokenizer\Matching\Modifiers;
 
-use Carrooi\Tokenizer\Matching\MatchBuilder;
+use Carrooi\Tokenizer\Matching\Matcher;
 use Carrooi\Tokenizer\Parsing\Lexer;
 use Carrooi\Tokenizer\Tokenizer;
 use CarrooiTests\Tokenizer\TestCase;
@@ -29,7 +29,7 @@ class NotRequiredModifierTest extends TestCase
 	{
 		$tokens = Tokenizer::tokenize('<?php 1,A,2');
 
-		$matcher = new MatchBuilder;
+		$matcher = new Matcher;
 		$matcher->select(
 			Lexer::T_LNUMBER,
 			Lexer::T_COMMA,
@@ -54,7 +54,7 @@ class NotRequiredModifierTest extends TestCase
 	{
 		$tokens = Tokenizer::tokenize('<?php 1,,2');
 
-		$matcher = new MatchBuilder;
+		$matcher = new Matcher;
 		$matcher->select(
 			Lexer::T_LNUMBER,
 			Lexer::T_COMMA,

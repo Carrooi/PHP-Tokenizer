@@ -9,7 +9,7 @@
 
 namespace CarrooiTests\Tokenizer\Matching\Modifiers;
 
-use Carrooi\Tokenizer\Matching\MatchBuilder;
+use Carrooi\Tokenizer\Matching\Matcher;
 use Carrooi\Tokenizer\Parsing\Lexer;
 use Carrooi\Tokenizer\Tokenizer;
 use CarrooiTests\Tokenizer\TestCase;
@@ -29,8 +29,8 @@ class ClosureModifierTest extends TestCase
 	{
 		$tokens = Tokenizer::tokenize('<?php true !== false');
 
-		$mb = new MatchBuilder;
-		$mb->select($mb->expr()->closure(function(Lexer $lexer) {
+		$matcher = new Matcher;
+		$matcher->select($matcher->expr()->closure(function(Lexer $lexer) {
 			$result = [];
 
 			$lexer->skipUntil(Lexer::T_IS_NOT_IDENTICAL);
@@ -43,7 +43,7 @@ class ClosureModifierTest extends TestCase
 			return $result;
 		}));
 
-		$match = $mb->match($tokens);
+		$match = $matcher->match($tokens);
 
 		Assert::equal([
 			$this->token('!==',   Lexer::T_IS_NOT_IDENTICAL, 12),

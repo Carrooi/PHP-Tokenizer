@@ -3,7 +3,7 @@
 namespace Carrooi\Tokenizer\Matching\Modifiers;
 
 use Carrooi\Tokenizer\Matching\Helpers;
-use Carrooi\Tokenizer\Matching\MatchBuilder;
+use Carrooi\Tokenizer\Matching\Matcher;
 use Carrooi\Tokenizer\Parsing\Lexer;
 
 /**
@@ -14,7 +14,7 @@ class AnyBetweenModifier extends AbstractModifier
 {
 
 
-	/** @var \Carrooi\Tokenizer\Matching\MatchBuilder */
+	/** @var \Carrooi\Tokenizer\Matching\Matcher */
 	private $builder;
 
 	/** @var int|\Carrooi\Tokenizer\Matching\Modifiers\AbstractModifier */
@@ -28,12 +28,12 @@ class AnyBetweenModifier extends AbstractModifier
 
 
 	/**
-	 * @param \Carrooi\Tokenizer\Matching\MatchBuilder $builder
+	 * @param \Carrooi\Tokenizer\Matching\Matcher $builder
 	 * @param int|\Carrooi\Tokenizer\Matching\Modifiers\AbstractModifier $startToken
 	 * @param int|\Carrooi\Tokenizer\Matching\Modifiers\AbstractModifier $endToken
 	 * @param bool $recursive
 	 */
-	public function __construct(MatchBuilder $builder, $startToken, $endToken, $recursive = false)
+	public function __construct(Matcher $builder, $startToken, $endToken, $recursive = false)
 	{
 		$this->builder = $builder;
 		$this->startToken = $startToken;

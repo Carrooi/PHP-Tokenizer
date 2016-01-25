@@ -3,7 +3,7 @@
 namespace Carrooi\Tokenizer\Matching\Modifiers;
 
 use Carrooi\Tokenizer\Matching\Helpers;
-use Carrooi\Tokenizer\Matching\MatchBuilder;
+use Carrooi\Tokenizer\Matching\Matcher;
 use Carrooi\Tokenizer\Parsing\Lexer;
 
 /**
@@ -14,7 +14,7 @@ class AnyOfModifier extends AbstractModifier
 {
 
 
-	/** @var \Carrooi\Tokenizer\Matching\MatchBuilder */
+	/** @var \Carrooi\Tokenizer\Matching\Matcher */
 	private $builder;
 
 	/** @var array */
@@ -22,10 +22,10 @@ class AnyOfModifier extends AbstractModifier
 
 
 	/**
-	 * @param \Carrooi\Tokenizer\Matching\MatchBuilder $builder
+	 * @param \Carrooi\Tokenizer\Matching\Matcher $builder
 	 * @param array $tokens
 	 */
-	public function __construct(MatchBuilder $builder, array $tokens)
+	public function __construct(Matcher $builder, array $tokens)
 	{
 		$this->builder = $builder;
 		$this->tokens = $tokens;

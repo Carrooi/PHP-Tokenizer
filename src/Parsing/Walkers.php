@@ -3,7 +3,7 @@
 namespace Carrooi\Tokenizer\Parsing;
 
 use Carrooi\Tokenizer\Matching\Helpers;
-use Carrooi\Tokenizer\Matching\MatchBuilder;
+use Carrooi\Tokenizer\Matching\Matcher;
 use Carrooi\Tokenizer\Matching\ResultMapping;
 use Carrooi\Tokenizer\Parsing\AST\ClassDeclaration;
 use Carrooi\Tokenizer\Parsing\AST\NumberExpression;
@@ -30,11 +30,11 @@ class Walkers
 
 
 	/**
-	 * @return \Carrooi\Tokenizer\Matching\MatchBuilder
+	 * @return \Carrooi\Tokenizer\Matching\Matcher
 	 */
 	public function number()
 	{
-		$matcher = new MatchBuilder;
+		$matcher = new Matcher;
 
 		$matcher->select(
 			$matcher->expr()->notRequired(Lexer::T_MINUS),
@@ -64,11 +64,11 @@ class Walkers
 
 
 	/**
-	 * @return \Carrooi\Tokenizer\Matching\MatchBuilder
+	 * @return \Carrooi\Tokenizer\Matching\Matcher
 	 */
 	public function namespaceDeclaration()
 	{
-		$matcher = new MatchBuilder;
+		$matcher = new Matcher;
 
 		$matcher->select(
 			Lexer::T_NAMESPACE,
@@ -94,11 +94,11 @@ class Walkers
 
 
 	/**
-	 * @return \Carrooi\Tokenizer\Matching\MatchBuilder
+	 * @return \Carrooi\Tokenizer\Matching\Matcher
 	 */
 	public function parenthesis()
 	{
-		$matcher = new MatchBuilder;
+		$matcher = new Matcher;
 
 		$matcher->select($matcher->expr()->anyBetween(
 			Lexer::T_PARENTHESIS_OPEN,
@@ -123,18 +123,18 @@ class Walkers
 
 
 	/**
-	 * @return \Carrooi\Tokenizer\Matching\MatchBuilder
+	 * @return \Carrooi\Tokenizer\Matching\Matcher
 	 */
 	public function newInstance()
 	{
-		$parenthesisMatcher = new MatchBuilder;
+		$parenthesisMatcher = new Matcher;
 
 		$parenthesisMatcher->select(
 			$parenthesisMatcher->expr()->notRequired(Lexer::T_WHITESPACE),
 			$this->parenthesis()
 		);
 
-		$matcher = new MatchBuilder;
+		$matcher = new Matcher;
 
 		$matcher->select(
 			Lexer::T_NEW,
@@ -173,11 +173,11 @@ class Walkers
 
 
 	/**
-	 * @return \Carrooi\Tokenizer\Matching\MatchBuilder
+	 * @return \Carrooi\Tokenizer\Matching\Matcher
 	 */
 	public function constant()
 	{
-		$matcher = new MatchBuilder;
+		$matcher = new Matcher;
 
 		$matcher->select(
 			Lexer::T_CONST,
@@ -198,11 +198,11 @@ class Walkers
 
 
 	/**
-	 * @return \Carrooi\Tokenizer\Matching\MatchBuilder
+	 * @return \Carrooi\Tokenizer\Matching\Matcher
 	 */
 	public function classDeclaration()
 	{
-		$typeMatcher = new MatchBuilder;
+		$typeMatcher = new Matcher;
 		$typeMatcher->select(
 			$typeMatcher->expr()->anyOf(
 				Lexer::T_FINAL,
@@ -211,7 +211,7 @@ class Walkers
 			Lexer::T_WHITESPACE
 		);
 
-		$extendsMatcher = new MatchBuilder;
+		$extendsMatcher = new Matcher;
 		$extendsMatcher->select(
 			Lexer::T_WHITESPACE,
 			Lexer::T_EXTENDS,
@@ -222,7 +222,7 @@ class Walkers
 			)
 		);
 
-		$implementsMatcher = new MatchBuilder;
+		$implementsMatcher = new Matcher;
 		$implementsMatcher->select(
 			Lexer::T_WHITESPACE,
 			Lexer::T_IMPLEMENTS,
@@ -235,7 +235,7 @@ class Walkers
 			)
 		);
 
-		$matcher = new MatchBuilder;
+		$matcher = new Matcher;
 
 		$matcher->select(
 			$matcher->expr()->notRequired($typeMatcher),

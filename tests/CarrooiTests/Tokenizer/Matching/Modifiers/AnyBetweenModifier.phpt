@@ -9,7 +9,7 @@
 
 namespace CarrooiTests\Tokenizer\Matching\Modifiers;
 
-use Carrooi\Tokenizer\Matching\MatchBuilder;
+use Carrooi\Tokenizer\Matching\Matcher;
 use Carrooi\Tokenizer\Parsing\Lexer;
 use Carrooi\Tokenizer\Tokenizer;
 use CarrooiTests\Tokenizer\TestCase;
@@ -29,12 +29,12 @@ class AnyBetweenModifierTest extends TestCase
 	{
 		$tokens = Tokenizer::tokenize('<?php (1,2)');
 
-		$mb = new MatchBuilder;
-		$mb->select(
-			$mb->expr()->anyBetween(Lexer::T_PARENTHESIS_OPEN, Lexer::T_PARENTHESIS_CLOSE)
+		$matcher = new Matcher;
+		$matcher->select(
+			$matcher->expr()->anyBetween(Lexer::T_PARENTHESIS_OPEN, Lexer::T_PARENTHESIS_CLOSE)
 		);
 
-		$match = $mb->match($tokens);
+		$match = $matcher->match($tokens);
 
 		Assert::equal([
 			$this->token('(', Lexer::T_PARENTHESIS_OPEN,  7),
@@ -50,12 +50,12 @@ class AnyBetweenModifierTest extends TestCase
 	{
 		$tokens = Tokenizer::tokenize('<?php (1(2(3)4)5)');
 
-		$mb = new MatchBuilder;
-		$mb->select(
-			$mb->expr()->anyBetween(Lexer::T_PARENTHESIS_OPEN, Lexer::T_PARENTHESIS_CLOSE, true)
+		$matcher = new Matcher;
+		$matcher->select(
+			$matcher->expr()->anyBetween(Lexer::T_PARENTHESIS_OPEN, Lexer::T_PARENTHESIS_CLOSE, true)
 		);
 
-		$match = $mb->match($tokens);
+		$match = $matcher->match($tokens);
 
 		Assert::equal([
 			$this->token('(', Lexer::T_PARENTHESIS_OPEN, 7),
@@ -81,12 +81,12 @@ class AnyBetweenModifierTest extends TestCase
 	{
 		$tokens = Tokenizer::tokenize('<?php (1,(2,(),2,2),(3))');
 
-		$mb = new MatchBuilder;
-		$mb->select(
-			$mb->expr()->anyBetween(Lexer::T_PARENTHESIS_OPEN, Lexer::T_PARENTHESIS_CLOSE, true)
+		$matcher = new Matcher;
+		$matcher->select(
+			$matcher->expr()->anyBetween(Lexer::T_PARENTHESIS_OPEN, Lexer::T_PARENTHESIS_CLOSE, true)
 		);
 
-		$match = $mb->match($tokens);
+		$match = $matcher->match($tokens);
 
 		Assert::equal([
 			$this->token('(', Lexer::T_PARENTHESIS_OPEN, 7),

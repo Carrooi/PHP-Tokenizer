@@ -10,7 +10,7 @@ use Carrooi\Tokenizer\Parsing\Lexer;
  *
  * @author David Kudera <kudera.d@gmail.com>
  */
-class MatchBuilder
+class Matcher
 {
 
 
@@ -42,7 +42,7 @@ class MatchBuilder
 		$token = is_array($token) ? $token : func_get_args();
 
 		foreach ($token as $t) {
-			if (!is_int($t) && !$t instanceof MatchBuilder && !$t instanceof AbstractModifier) {
+			if (!is_int($t) && !$t instanceof Matcher && !$t instanceof AbstractModifier) {
 				throw new InvalidArgumentException('Token can be only integer, modifier or instance of MatchBuilder.');
 			}
 
@@ -166,7 +166,7 @@ class MatchBuilder
 		if (is_int($select)) {
 			$match = $lexer->isNextToken($select);
 
-		} elseif ($select instanceof MatchBuilder) {
+		} elseif ($select instanceof Matcher) {
 			$tokens = array_slice($lexer->tokens, $lexer->position);
 			$match = [$select->match($tokens)];
 

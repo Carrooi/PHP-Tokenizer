@@ -9,7 +9,7 @@
 
 namespace CarrooiTests\Tokenizer\Matching;
 
-use Carrooi\Tokenizer\Matching\MatchBuilder;
+use Carrooi\Tokenizer\Matching\Matcher;
 use Carrooi\Tokenizer\Parsing\Lexer;
 use Carrooi\Tokenizer\Tokenizer;
 use CarrooiTests\Tokenizer\TestCase;
@@ -29,14 +29,14 @@ class MatchBuilder_SubMatchBuilderTest extends TestCase
 	{
 		$tokens = Tokenizer::tokenize('<?php if (true) {}');
 
-		$mb = new MatchBuilder;
-		$mb
+		$matcher = new Matcher;
+		$matcher
 			->select(Lexer::T_PARENTHESIS_OPEN)
-			->addSelect((new MatchBuilder)->select(Lexer::T_TRUE))
+			->addSelect((new Matcher)->select(Lexer::T_TRUE))
 			->addSelect(Lexer::T_PARENTHESIS_CLOSE)
 		;
 
-		$match = $mb->match($tokens);
+		$match = $matcher->match($tokens);
 
 		Assert::equal([
 			$this->token('(', Lexer::T_PARENTHESIS_OPEN, 10),
@@ -52,7 +52,7 @@ class MatchBuilder_SubMatchBuilderTest extends TestCase
 	{
 		$tokens = Tokenizer::tokenize('<?php final class');
 
-		$type = new MatchBuilder;
+		$type = new Matcher;
 		$type->select(
 			$type->expr()->anyOf(
 				Lexer::T_FINAL,
@@ -61,7 +61,7 @@ class MatchBuilder_SubMatchBuilderTest extends TestCase
 			Lexer::T_WHITESPACE
 		);
 
-		$matcher = new MatchBuilder;
+		$matcher = new Matcher;
 		$matcher->select(
 			$matcher->expr()->notRequired($type),
 			Lexer::T_CLASS

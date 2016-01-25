@@ -9,7 +9,7 @@
 
 namespace CarrooiTests\Tokenizer\Matching\Modifiers;
 
-use Carrooi\Tokenizer\Matching\MatchBuilder;
+use Carrooi\Tokenizer\Matching\Matcher;
 use Carrooi\Tokenizer\Parsing\Lexer;
 use Carrooi\Tokenizer\Tokenizer;
 use CarrooiTests\Tokenizer\TestCase;
@@ -29,12 +29,12 @@ class AnyOfModifierTest extends TestCase
 	{
 		$tokens = Tokenizer::tokenize('<?php namespace Test\\Test2\\Test3;');
 
-		$mb = new MatchBuilder;
-		$mb->select(
-			$mb->expr()->anyOf(Lexer::T_STRING, Lexer::T_NS_SEPARATOR)
+		$matcher = new Matcher;
+		$matcher->select(
+			$matcher->expr()->anyOf(Lexer::T_STRING, Lexer::T_NS_SEPARATOR)
 		);
 
-		$match = $mb->match($tokens);
+		$match = $matcher->match($tokens);
 
 		Assert::equal([
 			$this->token('Test',  Lexer::T_STRING,       17),

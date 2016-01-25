@@ -9,7 +9,7 @@
 
 namespace CarrooiTests\Tokenizer\Matching;
 
-use Carrooi\Tokenizer\Matching\MatchBuilder;
+use Carrooi\Tokenizer\Matching\Matcher;
 use Carrooi\Tokenizer\Parsing\Lexer;
 use Carrooi\Tokenizer\Tokenizer;
 use CarrooiTests\Tokenizer\TestCase;
@@ -27,8 +27,8 @@ class MatchBuilderTest extends TestCase
 
 	public function testSelect()
 	{
-		$mb = new MatchBuilder;
-		$mb
+		$matcher = new Matcher;
+		$matcher
 			->select(Lexer::T_LNUMBER, Lexer::T_WHITESPACE)
 			->addSelect(Lexer::T_IS_EQUAL)
 			->select(Lexer::T_LNUMBER, Lexer::T_WHITESPACE)
@@ -36,7 +36,7 @@ class MatchBuilderTest extends TestCase
 			->addSelect(Lexer::T_WHITESPACE)
 			->addSelect(Lexer::T_TRUE);
 
-		$selects = $mb->getSelects();
+		$selects = $matcher->getSelects();
 
 		Assert::equal([
 			Lexer::T_LNUMBER,
@@ -52,10 +52,10 @@ class MatchBuilderTest extends TestCase
 	{
 		$tokens = Tokenizer::tokenize('<?php true');
 
-		$mb = new MatchBuilder;
-		$mb->select(Lexer::T_TRUE);
+		$matcher = new Matcher;
+		$matcher->select(Lexer::T_TRUE);
 
-		$match = $mb->match($tokens);
+		$match = $matcher->match($tokens);
 
 		Assert::equal([
 			$this->token('true', Lexer::T_TRUE, 7, 1),
@@ -67,8 +67,8 @@ class MatchBuilderTest extends TestCase
 	{
 		$tokens = Tokenizer::tokenize('<?php if (1 == true) {}');
 
-		$mb = new MatchBuilder;
-		$mb
+		$matcher = new Matcher;
+		$matcher
 			->select(Lexer::T_LNUMBER, Lexer::T_WHITESPACE)
 			->addSelect(Lexer::T_IS_EQUAL)
 			->select(Lexer::T_LNUMBER, Lexer::T_WHITESPACE)
@@ -76,7 +76,7 @@ class MatchBuilderTest extends TestCase
 			->addSelect(Lexer::T_WHITESPACE)
 			->addSelect(Lexer::T_TRUE);
 
-		$match = $mb->match($tokens);
+		$match = $matcher->match($tokens);
 
 		Assert::equal([
 			$this->token('1',    Lexer::T_LNUMBER,    11),
@@ -92,10 +92,10 @@ class MatchBuilderTest extends TestCase
 	{
 		$tokens = Tokenizer::tokenize('<?php true === 1; true == 1');
 
-		$mb = new MatchBuilder;
-		$mb->select(Lexer::T_TRUE, Lexer::T_WHITESPACE, Lexer::T_IS_EQUAL, Lexer::T_WHITESPACE, Lexer::T_LNUMBER);
+		$matcher = new Matcher;
+		$matcher->select(Lexer::T_TRUE, Lexer::T_WHITESPACE, Lexer::T_IS_EQUAL, Lexer::T_WHITESPACE, Lexer::T_LNUMBER);
 
-		$match = $mb->match($tokens);
+		$match = $matcher->match($tokens);
 
 		Assert::equal([
 			$this->token('true', Lexer::T_TRUE,       19),
@@ -111,10 +111,10 @@ class MatchBuilderTest extends TestCase
 	{
 		$tokens = Tokenizer::tokenize('<?php true; false; true; false true');
 
-		$mb = new MatchBuilder;
-		$mb->select(Lexer::T_TRUE, Lexer::T_SEMICOLON);
+		$matcher = new Matcher;
+		$matcher->select(Lexer::T_TRUE, Lexer::T_SEMICOLON);
 
-		$match = $mb->matchAll($tokens);
+		$match = $matcher->matchAll($tokens);
 
 		Assert::equal([
 			[

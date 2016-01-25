@@ -12,14 +12,14 @@ class Expressions
 {
 
 
-	/** @var \Carrooi\Tokenizer\Matching\MatchBuilder */
+	/** @var \Carrooi\Tokenizer\Matching\Matcher */
 	private $builder;
 
 
 	/**
-	 * @param \Carrooi\Tokenizer\Matching\MatchBuilder $builder
+	 * @param \Carrooi\Tokenizer\Matching\Matcher $builder
 	 */
-	public function __construct(MatchBuilder $builder)
+	public function __construct(Matcher $builder)
 	{
 		$this->builder = $builder;
 	}
@@ -48,7 +48,7 @@ class Expressions
 
 
 	/**
-	 * @param int|\Carrooi\Tokenizer\Matching\Modifiers\AbstractModifier|\Carrooi\Tokenizer\Matching\MatchBuilder $token
+	 * @param int|\Carrooi\Tokenizer\Matching\Modifiers\AbstractModifier|\Carrooi\Tokenizer\Matching\Matcher $token
 	 * @return \Carrooi\Tokenizer\Matching\Modifiers\NotRequiredModifier
 	 */
 	public function notRequired($token)
