@@ -26,7 +26,7 @@ class ClassDeclarationWalkerTest extends TestCase
 {
 
 
-	public function _testWalkClass()
+	public function testWalkClass()
 	{
 		$tokens = Tokenizer::tokenize('<?php class Test');
 		$lexer = new Lexer($tokens);
@@ -42,7 +42,7 @@ class ClassDeclarationWalkerTest extends TestCase
 	}
 
 
-	public function _testWalkClass_final()
+	public function testWalkClass_final()
 	{
 		$tokens = Tokenizer::tokenize('<?php final class Test');
 		$lexer = new Lexer($tokens);
@@ -58,7 +58,7 @@ class ClassDeclarationWalkerTest extends TestCase
 	}
 
 
-	public function _testWalkClass_abstract()
+	public function testWalkClass_abstract()
 	{
 		$tokens = Tokenizer::tokenize('<?php abstract class Test');
 		$lexer = new Lexer($tokens);
@@ -74,7 +74,7 @@ class ClassDeclarationWalkerTest extends TestCase
 	}
 
 
-	public function _testWalkClass_extends()
+	public function testWalkClass_extends()
 	{
 		$tokens = Tokenizer::tokenize('<?php class Test extends App\BaseTest');
 		$lexer = new Lexer($tokens);
