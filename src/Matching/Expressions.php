@@ -49,7 +49,7 @@ class Expressions
 
 	/**
 	 * @param int|array|\Carrooi\Tokenizer\Matching\Matcher $delimiterToken
-	 * @param int|array $token
+	 * @param int|array|\Carrooi\Tokenizer\Matching\Matcher $token
 	 * @return \Carrooi\Tokenizer\Matching\Modifiers\ListOfModifier
 	 */
 	public function listOf($delimiterToken, $token)

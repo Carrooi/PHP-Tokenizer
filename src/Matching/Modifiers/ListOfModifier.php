@@ -20,14 +20,14 @@ class ListOfModifier extends AbstractModifier
 	/** @var array|\Carrooi\Tokenizer\Matching\Matcher */
 	private $delimiter;
 
-	/** @var array */
+	/** @var array|\Carrooi\Tokenizer\Matching\Matcher */
 	private $tokens;
 
 
 	/**
 	 * @param \Carrooi\Tokenizer\Matching\Matcher $matcher
 	 * @param array|\Carrooi\Tokenizer\Matching\Matcher $delimiter
-	 * @param array $tokens
+	 * @param array|\Carrooi\Tokenizer\Matching\Matcher $tokens
 	 */
 	public function __construct(Matcher $matcher, array $delimiter, array $tokens)
 	{
@@ -109,6 +109,10 @@ class ListOfModifier extends AbstractModifier
 			$token = $this->matcher->_matchToken($lexer, $select);
 
 			if ($select instanceof Matcher && $token) {
+				if (!$token[0]) {
+					return null;
+				}
+
 				$result[] = $token[0];
 
 			} elseif ($token !== false) {

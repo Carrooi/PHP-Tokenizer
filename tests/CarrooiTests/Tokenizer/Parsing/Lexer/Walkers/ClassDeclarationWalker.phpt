@@ -26,7 +26,7 @@ class ClassDeclarationWalkerTest extends TestCase
 {
 
 
-	public function testWalkClass()
+	public function _testWalkClass()
 	{
 		$tokens = Tokenizer::tokenize('<?php class Test');
 		$lexer = new Lexer($tokens);
@@ -42,7 +42,7 @@ class ClassDeclarationWalkerTest extends TestCase
 	}
 
 
-	public function testWalkClass_final()
+	public function _testWalkClass_final()
 	{
 		$tokens = Tokenizer::tokenize('<?php final class Test');
 		$lexer = new Lexer($tokens);
@@ -58,7 +58,7 @@ class ClassDeclarationWalkerTest extends TestCase
 	}
 
 
-	public function testWalkClass_abstract()
+	public function _testWalkClass_abstract()
 	{
 		$tokens = Tokenizer::tokenize('<?php abstract class Test');
 		$lexer = new Lexer($tokens);
@@ -74,7 +74,7 @@ class ClassDeclarationWalkerTest extends TestCase
 	}
 
 
-	public function testWalkClass_extends()
+	public function _testWalkClass_extends()
 	{
 		$tokens = Tokenizer::tokenize('<?php class Test extends App\BaseTest');
 		$lexer = new Lexer($tokens);
@@ -93,7 +93,7 @@ class ClassDeclarationWalkerTest extends TestCase
 
 	public function testWalkClass_implements()
 	{
-		$tokens = Tokenizer::tokenize('<?php class Test implements ITest, App\ITest');
+		$tokens = Tokenizer::tokenize('<?php class Test implements ITest, App\TestInterface');
 		$lexer = new Lexer($tokens);
 
 		$class = $lexer->walkClassDeclaration();
@@ -103,10 +103,13 @@ class ClassDeclarationWalkerTest extends TestCase
 		Assert::false($class->abstract);
 		Assert::false($class->final);
 		Assert::null($class->extends);
-		Assert::equal([
-			'ITest',
-			'App\ITest',
-		], $class->implements);
+		Assert::count(2, $class->implements);
+
+		Assert::type(ClassNameExpression::class, $class->implements[0]);
+		Assert::same('ITest', $class->implements[0]->value);
+
+		Assert::type(ClassNameExpression::class, $class->implements[1]);
+		Assert::same('App\TestInterface', $class->implements[1]->value);
 	}
 
 }

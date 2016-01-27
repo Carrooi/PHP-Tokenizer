@@ -243,16 +243,21 @@ class Walkers
 			$this->className()
 		);
 
+		$implementsDelimiterMatcher = new Matcher;
+		$implementsDelimiterMatcher->select(
+			$implementsDelimiterMatcher->expr()->notRequired(Lexer::T_WHITESPACE),
+			Lexer::T_COMMA,
+			$implementsDelimiterMatcher->expr()->notRequired(Lexer::T_WHITESPACE)
+		);
+
 		$implementsMatcher = new Matcher;
 		$implementsMatcher->select(
 			Lexer::T_WHITESPACE,
 			Lexer::T_IMPLEMENTS,
 			Lexer::T_WHITESPACE,
-			$implementsMatcher->expr()->anyOf(
-				Lexer::T_WHITESPACE,
-				Lexer::T_COMMA,
-				Lexer::T_STRING,			// todo: use className walker
-				Lexer::T_NS_SEPARATOR
+			$implementsMatcher->expr()->listOf(
+				$implementsDelimiterMatcher,
+				$this->className()
 			)
 		);
 
@@ -285,16 +290,12 @@ class Walkers
 			}
 
 			if ($tokens[5]) {
-				$implements = array_map(function(array $token) {
-					return $token['value'];
-				}, array_slice($tokens[5], 3));
-				$implements = implode('', $implements);
-				$implements = explode(',', $implements);
-				$implements = array_map(function($implement) {
-					return trim($implement);
-				}, $implements);
+				$implements = array_slice($tokens[5], 3);
+				$implements = array_filter($implements, function($token) {
+					return $token instanceof ClassNameExpression;
+				});
 
-				$class->implements = $implements;
+				$class->implements = array_values($implements);
 			}
 
 			return $class;
