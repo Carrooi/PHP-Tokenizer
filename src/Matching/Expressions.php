@@ -48,6 +48,21 @@ class Expressions
 
 
 	/**
+	 * @param int|array|\Carrooi\Tokenizer\Matching\Matcher $delimiterToken
+	 * @param int|array $token
+	 * @return \Carrooi\Tokenizer\Matching\Modifiers\ListOfModifier
+	 */
+	public function listOf($delimiterToken, $token)
+	{
+		return new Modifiers\ListOfModifier(
+			$this->builder,
+			is_array($delimiterToken) ? $delimiterToken : [$delimiterToken],
+			is_array($token) ? $token : array_slice(func_get_args(), 1)
+		);
+	}
+
+
+	/**
 	 * @param int|\Carrooi\Tokenizer\Matching\Modifiers\AbstractModifier|\Carrooi\Tokenizer\Matching\Matcher $token
 	 * @return \Carrooi\Tokenizer\Matching\Modifiers\NotRequiredModifier
 	 */
